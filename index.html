@@ -41,12 +41,12 @@ pointLight.distance = 10000;
 scene.add(pointLight);
 var planeMaterial = new THREE.MeshLambertMaterial(
 		{
-		color:0x000000
+		color:0xffff00
 		});
 var plane = new THREE.Mesh(
 		new THREE.PlaneGeometry(
-			1366*.95,
-			768,
+			500,
+			200,
 			1,
 			1
 			),
@@ -73,7 +73,7 @@ var paddlematerial = new THREE.MeshBasicMaterial(
 		color:0xff0000
 		}
 		);
-var fieldwidth=220;
+var fieldwidth=245;
 var fieldheight=100;
 paddle1.position.x = -fieldwidth;
 camera.position.x = paddle1.position.x -100;
@@ -95,22 +95,40 @@ var paddle2 = new THREE.Mesh(
 paddle2.position.x = fieldwidth;
 scene.add(paddle2);
 
-var ballspeed = 1;
+var ballspeed = 1,balldirx=1,balldiry=1;
 render();
+function movepaddle(event){
+	var keycode = event.which;
+	if(keycode==65){
+		if(paddle1.position.y < (fieldheight-paddleheight/2))
+			paddle1.position.y += 2;
+	}
+	if(keycode==68){
+		if(paddle1.position.y > (-fieldheight+paddleheight/2))
+			paddle1.position.y -= 2;
+	}
+}
 function render()
 {
 	requestAnimationFrame(render);
 	sphere.position.x += ballspeed;
+	sphere.position.y += balldiry;
 	ballphysics();
+	document.addEventListener("keydown", movepaddle, false);
 
 	renderer.render(scene,camera);
 }
 
 function ballphysics(){
-	if(sphere.position.x <= -210)
+	if(sphere.position.x <= (-fieldwidth+paddlewidth/2))
+	
 		ballspeed = -ballspeed;
-	if(sphere.position.x >= 210)
+	if(sphere.position.x >= (fieldwidth-paddlewidth/2))
 		ballspeed = -ballspeed;
+	if(sphere.position.y >= (fieldheight-5))
+		balldiry = - balldiry;
+	if(sphere.position.y <= (-fieldheight+5))
+		balldiry = -balldiry;
 	
 }
 
