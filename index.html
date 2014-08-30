@@ -156,7 +156,7 @@ function checkstatus(){
 function ballphysics(){
 	if(sphere.position.x <= (-fieldwidth+paddlewidth/2))
 	{
-		if(sphere.position.y-5<=(paddle1.position.y+paddlewidth/2) && sphere.position.y+5 >=(paddle1.position.y-paddlewidth/2) && ballspeed<0)
+		if(sphere.position.y-5<=(paddle1.position.y+paddleheight/2) && sphere.position.y+5 >=(paddle1.position.y-paddleheight/2) && ballspeed<0)
 		{
 		ballspeed = -ballspeed;
 		}
@@ -170,7 +170,7 @@ function ballphysics(){
 	}
 	if(sphere.position.x >= (fieldwidth-paddlewidth/2))
 	{
-		if(sphere.position.y-5<=(paddle2.position.y+paddlewidth/2) && sphere.position.y+5 >=(paddle2.position.y-paddlewidth/2) && ballspeed>0)
+		if(sphere.position.y-5<=(paddle2.position.y+paddleheight/2) && sphere.position.y+5 >=(paddle2.position.y-paddleheight/2) && ballspeed>0)
 		{
 		ballspeed = -ballspeed;
 		}
