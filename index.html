@@ -95,24 +95,31 @@ var paddle2 = new THREE.Mesh(
 paddle2.position.x = fieldwidth;
 scene.add(paddle2);
 
-var ballspeed = 1,balldirx=1,balldiry=1;
+var ballspeed = 2,balldirx=1,balldiry=2;
 render();
 function movepaddle(event){
 	var keycode = event.which;
 	if(keycode==65){
 		if(paddle1.position.y < (fieldheight-paddleheight/2))
-			paddle1.position.y += 2;
+			paddle1.position.y += 4;
 	}
 	if(keycode==68){
 		if(paddle1.position.y > (-fieldheight+paddleheight/2))
-			paddle1.position.y -= 2;
+			paddle1.position.y -= 4;
 	}
+	if(keycode==32){
+		pause = - pause;
+	}
+	event.preventDefault();
+
 }
+var pause=1;
 function render()
 {
 	requestAnimationFrame(render);
+	if(pause>0){
 	sphere.position.x += ballspeed;
-	sphere.position.y += balldiry;
+	sphere.position.y += balldiry;}
 	ballphysics();
 	document.addEventListener("keydown", movepaddle, false);
 
@@ -120,10 +127,20 @@ function render()
 }
 
 function ballphysics(){
-	if(sphere.position.x <= (-fieldwidth+paddlewidth/2))
+	if(sphere.position.x+5 <= (-fieldwidth+paddlewidth/2))
+	{
 	
+		if(sphere.position.y-5<=(paddle1.position.y+paddlewidth/2) && sphere.position.y+5 >=(paddle1.position.y-paddlewidth/2) && ballspeed<0)
+		{
 		ballspeed = -ballspeed;
-	if(sphere.position.x >= (fieldwidth-paddlewidth/2))
+		}
+		else{
+			sphere.position.set(0,0,0);
+		}
+
+	}
+
+	if(sphere.position.x > (fieldwidth-paddlewidth/2))
 		ballspeed = -ballspeed;
 	if(sphere.position.y >= (fieldheight-5))
 		balldiry = - balldiry;
