@@ -31,6 +31,7 @@ var sphere = new THREE.Mesh(
 		new THREE.SphereGeometry(5,6,6),
 		sphereMaterial
 		);
+sphere.position.z = 5;
 scene.add(sphere);
 var sphereMaterial = new THREE.MeshLambertMaterial({color:0xcc0000});
 
@@ -154,21 +155,21 @@ function checkstatus(){
 	}
 }
 function ballphysics(){
-	if(sphere.position.x <= (-fieldwidth+paddlewidth/2))
+	if(sphere.position.x -5 <= (-fieldwidth+paddlewidth/2))
 	{
 		if(sphere.position.y-5<=(paddle1.position.y+paddleheight/2) && sphere.position.y+5 >=(paddle1.position.y-paddleheight/2) && ballspeed<0)
 		{
 		ballspeed = -ballspeed;
 		}
 		else{
-			sphere.position.set(0,0,0);
+			sphere.position.set(0,0,5);
 			pause = -pause;
 			p2points += 1;
 			document.getElementById("player2").innerHTML=p2points;
 			checkstatus();
 		}
 	}
-	if(sphere.position.x >= (fieldwidth-paddlewidth/2))
+	if(sphere.position.x +5>= (fieldwidth-paddlewidth/2))
 	{
 		if(sphere.position.y-5<=(paddle2.position.y+paddleheight/2) && sphere.position.y+5 >=(paddle2.position.y-paddleheight/2) && ballspeed>0)
 		{
@@ -176,7 +177,7 @@ function ballphysics(){
 		}
 		else{
 
-			sphere.position.set(0,0,0);
+			sphere.position.set(0,0,5);
 			pause = -pause;
 			p1points+=1;
 			document.getElementById("player1").innerHTML=p1points;
