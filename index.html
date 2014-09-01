@@ -45,7 +45,7 @@ pointLight.distance = 10000;
 scene.add(pointLight);
 var planeMaterial = new THREE.MeshLambertMaterial(
 		{
-		color:0x00ff00
+		color:0x4bd121
 		});
 var planeheight=200,planewidth=500,planequality=1;
 var plane = new THREE.Mesh(
@@ -58,6 +58,7 @@ var plane = new THREE.Mesh(
 			),
 		planeMaterial
 		);
+plane.receiveShadow=true;
 scene.add(plane);
 var spotlight = new THREE.SpotLight(0xF8D898);
 spotlight.position.set(0,0,460);
@@ -130,7 +131,18 @@ table.position.z = -51;
 table.receiveShadow=true;
 scene.add(table);
 
+var ground = new THREE.Mesh(
+		new THREE.BoxGeometry(
+			1000,
+			1000,
+			3
+			),
+		new THREE.MeshLambertMaterial({color:0x888888})
+		);
 
+ground.receiveShadow=true;
+ground.position.z = -132;
+scene.add(ground);
 var ballspeed = 2,balldirx=1,balldiry=2;
 render();
 function movepaddle1(event){
