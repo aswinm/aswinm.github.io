@@ -24,16 +24,17 @@ var camera = new THREE.PerspectiveCamera(45,width/height,0.1,1000);
 var scene = new THREE.Scene();
 scene.add(camera);
 renderer.setSize(width,height);
+renderer.setClearColor(0x000000,1);
 $container.append(renderer.domElement);
 
 
+var sphereMaterial = new THREE.MeshLambertMaterial({color:0xcc0000});
 var sphere = new THREE.Mesh(
 		new THREE.SphereGeometry(5,6,6),
 		sphereMaterial
 		);
 sphere.position.z = 5;
 scene.add(sphere);
-var sphereMaterial = new THREE.MeshLambertMaterial({color:0xcc0000});
 
 var pointLight = new THREE.PointLight(0xf8d898);
 pointLight.position.x = -1000;
@@ -44,22 +45,35 @@ pointLight.distance = 10000;
 scene.add(pointLight);
 var planeMaterial = new THREE.MeshLambertMaterial(
 		{
-		color:0xffff00
+		color:0x00ff00
 		});
+var planeheight=200,planewidth=500,planequality=1;
 var plane = new THREE.Mesh(
 		new THREE.PlaneGeometry(
-			500,
-			200,
-			1,
-			1
+			planewidth,
+			planeheight,
+			planequality,
+			planequality
+
 			),
 		planeMaterial
 		);
 scene.add(plane);
+var spotlight = new THREE.SpotLight(0xF8D898);
+spotlight.position.set(0,0,460);
+spotlight.intensity = 1.5;
+spotlight.castShadow=true;
+scene.add(spotlight);
+renderer.shadowMapEnabled=true;
 var paddlewidth=10,
     paddleheight=30,
     paddledepth=10,
     paddlequality=1;
+var paddlematerial = new THREE.MeshBasicMaterial(
+		{
+		color:0x0000ff
+		}
+		);
 var paddle1 = new THREE.Mesh(
 		new THREE.BoxGeometry(
 			paddlewidth,
@@ -71,14 +85,11 @@ var paddle1 = new THREE.Mesh(
 			paddlematerial
 			
 		);
-var paddlematerial = new THREE.MeshBasicMaterial(
-		{
-		color:0xff0000
-		}
-		);
 var fieldwidth=245;
 var fieldheight=100;
 paddle1.position.x = -fieldwidth;
+paddle1.position.z = 5;
+paddle1.receiveShadow=true;
 camera.position.x = paddle1.position.x -100;
 camera.position.z = paddle1.position.z +100;
 camera.rotation.z = -90*Math.PI/180;
@@ -96,11 +107,33 @@ var paddle2 = new THREE.Mesh(
 			
 		);
 paddle2.position.x = fieldwidth;
+paddle2.position.z = 5;
+
 scene.add(paddle2);
+
+var tablematerial = new THREE.MeshLambertMaterial(
+		{
+		color:0x663300}
+		)
+var table=  new THREE.Mesh(
+		new THREE.BoxGeometry(
+			planewidth*1.03,
+			planeheight*1.05,
+			100,
+			planequality,
+			planequality
+
+			),
+		tablematerial
+		);
+table.position.z = -51;
+table.receiveShadow=true;
+scene.add(table);
+
 
 var ballspeed = 2,balldirx=1,balldiry=2;
 render();
-function movepaddle(event){
+function movepaddle1(event){
 	var keycode = event.which;
 	if(keycode==65){
 		if(paddle1.position.y < (fieldheight-paddleheight/2))
@@ -131,8 +164,11 @@ function render()
 	if(pause>0){
 	sphere.position.x += ballspeed;
 	sphere.position.y += balldiry;}
+	spotlight.position.x = sphere.position.x;
+	spotlight.position.y = sphere.position.y;
+
 	ballphysics();
-	document.addEventListener("keydown", movepaddle, false);
+	document.addEventListener("keydown", movepaddle1, false);
 
 	renderer.render(scene,camera);
 }
