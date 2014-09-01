@@ -91,6 +91,7 @@ var fieldheight=100;
 paddle1.position.x = -fieldwidth;
 paddle1.position.z = 5;
 paddle1.receiveShadow=true;
+paddle1.castShadow=true;
 camera.position.x = paddle1.position.x -100;
 camera.position.z = paddle1.position.z +100;
 camera.rotation.z = -90*Math.PI/180;
@@ -144,15 +145,49 @@ ground.receiveShadow=true;
 ground.position.z = -132;
 scene.add(ground);
 var ballspeed = 2,balldirx=1,balldiry=2;
+
+var pillarheight=30,pillarwidth=30,pillarz=1000
+
+var pillarmaterial = new THREE.MeshLambertMaterial(
+			{color:0x534d0d}
+			);
+for(var i=-5;i<5;i++){
+var pillar = new THREE.Mesh(
+		new THREE.BoxGeometry(
+			pillarheight,
+			pillarwidth,
+			pillarz
+			),
+		pillarmaterial
+		);
+pillar.position.y = fieldheight + 150;
+pillar.position.x = -90*i;
+pillar.castShadow=true;
+scene.add(pillar);
+}
+for(var i=-5;i<5;i++){
+var pillar = new THREE.Mesh(
+		new THREE.BoxGeometry(
+			pillarheight,
+			pillarwidth,
+			pillarz
+			),
+		pillarmaterial
+		);
+pillar.position.y = -fieldheight - 150;
+pillar.position.x = -90*i;
+pillar.castShadow=true;
+scene.add(pillar);
+}
 render();
 function movepaddle1(event){
 	var keycode = event.which;
 	if(keycode==65){
-		if(paddle1.position.y < (fieldheight-paddleheight/2))
+		if((paddle1.position.y) <= (fieldheight-paddleheight/2))
 			paddle1.position.y += 4;
 	}
 	if(keycode==68){
-		if(paddle1.position.y > (-fieldheight+paddleheight/2))
+		if((paddle1.position.y) >= (-fieldheight+paddleheight/2))
 			paddle1.position.y -= 4;
 	}
 	if(keycode==32){
@@ -176,8 +211,6 @@ function render()
 	if(pause>0){
 	sphere.position.x += ballspeed;
 	sphere.position.y += balldiry;}
-	spotlight.position.x = sphere.position.x;
-	spotlight.position.y = sphere.position.y;
 
 	ballphysics();
 	document.addEventListener("keydown", movepaddle1, false);
